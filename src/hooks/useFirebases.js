@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
-import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import app from "../firebase.init";
 
 const auth = getAuth(app);
 
-const useFirebase =()=>{
-    const [user, setUser] =useState({});
-      // google Provider
+const useFirebase = () => {
+  const [user, setUser] = useState({});
+  // google Provider
   const GoogleProvider = new GoogleAuthProvider();
 
   const signInGoogle = (event) => {
@@ -24,21 +30,22 @@ const useFirebase =()=>{
       });
     event.preventDefault();
   };
-  const handleSignOut =()=>{
+  const handleSignOut = () => {
     const auth = getAuth();
     signOut(auth)
-    .then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-    });
-  }
-
-  useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
-          setUser(user);
+      .then(() => {
+        // Sign-out successful.
       })
-  }, [])
-    return {user, signInGoogle, handleSignOut};
-}
+      .catch((error) => {
+        // An error happened.
+      });
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+  }, []);
+  return { user, signInGoogle, handleSignOut };
+};
 export default useFirebase;
